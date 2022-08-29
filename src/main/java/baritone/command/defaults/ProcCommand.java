@@ -42,22 +42,22 @@ public class ProcCommand extends Command {
         IPathingControlManager pathingControlManager = baritone.getPathingControlManager();
         IBaritoneProcess process = pathingControlManager.mostRecentInControl().orElse(null);
         if (process == null) {
-            throw new CommandInvalidStateException("No process in control");
+            throw new CommandInvalidStateException("没有在控制中的进程");
         }
         logDirect(String.format(
-                "Class: %s\n" +
-                        "Priority: %f\n" +
-                        "Temporary: %b\n" +
-                        "Display name: %s\n" +
-                        "Last command: %s",
+                "类名：%s\n" +
+                        "优先级：%f\n" +
+                        "临时的：%s\n" +
+                        "展示名：%s\n" +
+                        "最近命令：%s",
                 process.getClass().getTypeName(),
                 process.priority(),
-                process.isTemporary(),
+                process.isTemporary() ? "是" : "否",
                 process.displayName(),
                 pathingControlManager
                         .mostRecentCommand()
                         .map(PathingCommand::toString)
-                        .orElse("None")
+                        .orElse("无")
         ));
     }
 
@@ -68,18 +68,18 @@ public class ProcCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "View process state information";
+        return "查看进程状态信息";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "The proc command provides miscellaneous information about the process currently controlling Baritone.",
+                "proc 命令提供当前控制 Baritone 的进程的各种信息。",
                 "",
-                "You are not expected to understand this if you aren't familiar with how Baritone works.",
+                "如果你不熟悉 Baritone 的工作原理，不要指望理解这些信息。",
                 "",
-                "Usage:",
-                "> proc - View process information, if present"
+                "用法：",
+                "> proc - 查看进程信息（如有）"
         );
     }
 }

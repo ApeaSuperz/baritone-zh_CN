@@ -39,7 +39,7 @@ public class ForceCancelCommand extends Command {
         IPathingBehavior pathingBehavior = baritone.getPathingBehavior();
         pathingBehavior.cancelEverything();
         pathingBehavior.forceCancel();
-        logDirect("ok force canceled");
+        logDirect("好的，已强制取消");
     }
 
     @Override
@@ -49,15 +49,15 @@ public class ForceCancelCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "Force cancel";
+        return "强制取消";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "Like cancel, but more forceful.",
+                "像 cancel 一样，但更强劲。",
                 "",
-                "Usage:",
+                "用法：",
                 "> forcecancel"
         );
     }

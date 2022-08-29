@@ -46,7 +46,7 @@ public class MineCommand extends Command {
             boms.add(args.getDatatypeFor(ForBlockOptionalMeta.INSTANCE));
         }
         WorldScanner.INSTANCE.repack(ctx);
-        logDirect(String.format("Mining %s", boms.toString()));
+        logDirect(String.format("正在挖掘 %s", boms.toString()));
         baritone.getMineProcess().mine(quantity, boms.toArray(new BlockOptionalMeta[0]));
     }
 
@@ -57,22 +57,22 @@ public class MineCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "Mine some blocks";
+        return "挖点方块";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "The mine command allows you to tell Baritone to search for and mine individual blocks.",
+                "mine 命令允许你告诉 Baritone 搜索并挖掘不同的方块。",
                 "",
-                "The specified blocks can be ores (which are commonly cached), or any other block.",
+                "指定的方块可以是矿石（通常被缓存），或者其它任何方块。",
                 "",
-                "Also see the legitMine settings (see #set l legitMine).",
+                "另请参见 legitMine 设置（见 #set l legitMine）。",
                 "",
-                "Usage:",
-                "> mine diamond_ore - Mines all diamonds it can find.",
-                "> mine redstone_ore lit_redstone_ore - Mines redstone ore.",
-                "> mine log:0 - Mines only oak logs."
+                "用法：",
+                "> mine diamond_ore - 开采它能找到的所有钻石",
+                "> mine redstone_ore lit_redstone_ore - 开采红石矿",
+                "> mine log:0 - 只开采橡木"
         );
     }
 }

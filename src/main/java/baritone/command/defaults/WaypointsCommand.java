@@ -60,14 +60,14 @@ public class WaypointsCommand extends Command {
     public void execute(String label, IArgConsumer args) throws CommandException {
         Action action = args.hasAny() ? Action.getByName(args.getString()) : Action.LIST;
         if (action == null) {
-            throw new CommandInvalidTypeException(args.consumed(), "an action");
+            throw new CommandInvalidTypeException(args.consumed(), "一种操作");
         }
         BiFunction<IWaypoint, Action, ITextComponent> toComponent = (waypoint, _action) -> {
             ITextComponent component = new TextComponentString("");
             ITextComponent tagComponent = new TextComponentString(waypoint.getTag().name() + " ");
             tagComponent.getStyle().setColor(TextFormatting.GRAY);
             String name = waypoint.getName();
-            ITextComponent nameComponent = new TextComponentString(!name.isEmpty() ? name : "<empty>");
+            ITextComponent nameComponent = new TextComponentString(!name.isEmpty() ? name : "<空>");
             nameComponent.getStyle().setColor(!name.isEmpty() ? TextFormatting.GRAY : TextFormatting.DARK_GRAY);
             ITextComponent timestamp = new TextComponentString(" @ " + new Date(waypoint.getCreationTimestamp()));
             timestamp.getStyle().setColor(TextFormatting.DARK_GRAY);
@@ -77,7 +77,7 @@ public class WaypointsCommand extends Command {
             component.getStyle()
                     .setHoverEvent(new HoverEvent(
                             HoverEvent.Action.SHOW_TEXT,
-                            new TextComponentString("Click to select")
+                            new TextComponentString("点击以选择")
                     ))
                     .setClickEvent(new ClickEvent(
                             ClickEvent.Action.RUN_COMMAND,
@@ -109,8 +109,8 @@ public class WaypointsCommand extends Command {
                         waypoints,
                         () -> logDirect(
                                 tag != null
-                                        ? String.format("All waypoints by tag %s:", tag.name())
-                                        : "All waypoints:"
+                                        ? String.format("标签 %s 的所有路点：", tag.name())
+                                        : "所有路点："
                         ),
                         transform,
                         String.format(
@@ -125,8 +125,8 @@ public class WaypointsCommand extends Command {
                 args.requireMax(0);
                 throw new CommandInvalidStateException(
                         tag != null
-                                ? "No waypoints found by that tag"
-                                : "No waypoints found"
+                                ? "该标签未找到任何路点"
+                                : "未找到路点"
                 );
             }
         } else if (action == Action.SAVE) {
@@ -143,7 +143,7 @@ public class WaypointsCommand extends Command {
             args.requireMax(0);
             IWaypoint waypoint = new Waypoint(name, tag, pos);
             ForWaypoints.waypoints(this.baritone).addWaypoint(waypoint);
-            ITextComponent component = new TextComponentString("Waypoint added: ");
+            ITextComponent component = new TextComponentString("新增路点：");
             component.getStyle().setColor(TextFormatting.GRAY);
             component.appendSibling(toComponent.apply(waypoint, Action.INFO));
             logDirect(component);
@@ -155,7 +155,7 @@ public class WaypointsCommand extends Command {
                 ForWaypoints.waypoints(this.baritone).removeWaypoint(waypoint);
             }
             deletedWaypoints.computeIfAbsent(baritone.getWorldProvider().getCurrentWorld(), k -> new ArrayList<>()).addAll(Arrays.<IWaypoint>asList(waypoints));
-            ITextComponent textComponent = new TextComponentString(String.format("Cleared %d waypoints, click to restore them", waypoints.length));
+            ITextComponent textComponent = new TextComponentString(String.format("清除了 %d 个路点，点击可恢复它们", waypoints.length));
             textComponent.getStyle().setClickEvent(new ClickEvent(
                     ClickEvent.Action.RUN_COMMAND,
                     String.format(
@@ -189,7 +189,7 @@ public class WaypointsCommand extends Command {
             }
             waypoints.forEach(ForWaypoints.waypoints(this.baritone)::addWaypoint);
             deletedWaypoints.removeIf(waypoints::contains);
-            logDirect(String.format("Restored %d waypoints", waypoints.size()));
+            logDirect(String.format("恢复了 %d 个路点", waypoints.size()));
         } else {
             IWaypoint[] waypoints = args.getDatatypeFor(ForWaypoints.INSTANCE);
             IWaypoint waypoint = null;
@@ -204,12 +204,12 @@ public class WaypointsCommand extends Command {
                     }
                 }
                 if (waypoint == null) {
-                    throw new CommandInvalidStateException("Timestamp was specified but no waypoint was found");
+                    throw new CommandInvalidStateException("指定了时间戳，但未找到路点");
                 }
             } else {
                 switch (waypoints.length) {
                     case 0:
-                        throw new CommandInvalidStateException("No waypoints found");
+                        throw new CommandInvalidStateException("未找到路点");
                     case 1:
                         waypoint = waypoints[0];
                         break;
@@ -222,7 +222,7 @@ public class WaypointsCommand extends Command {
                 Paginator.paginate(
                         args,
                         waypoints,
-                        () -> logDirect("Multiple waypoints were found:"),
+                        () -> logDirect("找到多个路点："),
                         transform,
                         String.format(
                                 "%s%s %s %s",
@@ -235,8 +235,8 @@ public class WaypointsCommand extends Command {
             } else {
                 if (action == Action.INFO) {
                     logDirect(transform.apply(waypoint));
-                    logDirect(String.format("Position: %s", waypoint.getLocation()));
-                    ITextComponent deleteComponent = new TextComponentString("Click to delete this waypoint");
+                    logDirect(String.format("位置：%s", waypoint.getLocation()));
+                    ITextComponent deleteComponent = new TextComponentString("点击删除这个路点");
                     deleteComponent.getStyle().setClickEvent(new ClickEvent(
                             ClickEvent.Action.RUN_COMMAND,
                             String.format(
@@ -247,7 +247,7 @@ public class WaypointsCommand extends Command {
                                     waypoint.getCreationTimestamp()
                             )
                     ));
-                    ITextComponent goalComponent = new TextComponentString("Click to set goal to this waypoint");
+                    ITextComponent goalComponent = new TextComponentString("点击将目标设置为这个路点");
                     goalComponent.getStyle().setClickEvent(new ClickEvent(
                             ClickEvent.Action.RUN_COMMAND,
                             String.format(
@@ -258,7 +258,7 @@ public class WaypointsCommand extends Command {
                                     waypoint.getCreationTimestamp()
                             )
                     ));
-                    ITextComponent recreateComponent = new TextComponentString("Click to show a command to recreate this waypoint");
+                    ITextComponent recreateComponent = new TextComponentString("点击显示重新创建该路点的命令");
                     recreateComponent.getStyle().setClickEvent(new ClickEvent(
                             ClickEvent.Action.SUGGEST_COMMAND,
                             String.format(
@@ -272,7 +272,7 @@ public class WaypointsCommand extends Command {
                                     waypoint.getLocation().z
                             )
                     ));
-                    ITextComponent backComponent = new TextComponentString("Click to return to the waypoints list");
+                    ITextComponent backComponent = new TextComponentString("点击返回路点列表");
                     backComponent.getStyle().setClickEvent(new ClickEvent(
                             ClickEvent.Action.RUN_COMMAND,
                             String.format(
@@ -288,7 +288,7 @@ public class WaypointsCommand extends Command {
                 } else if (action == Action.DELETE) {
                     ForWaypoints.waypoints(this.baritone).removeWaypoint(waypoint);
                     deletedWaypoints.computeIfAbsent(baritone.getWorldProvider().getCurrentWorld(), k -> new ArrayList<>()).add(waypoint);
-                    ITextComponent textComponent = new TextComponentString("That waypoint has successfully been deleted, click to restore it");
+                    ITextComponent textComponent = new TextComponentString("该路点已成功删除，点击可恢复");
                     textComponent.getStyle().setClickEvent(new ClickEvent(
                             ClickEvent.Action.RUN_COMMAND,
                             String.format(
@@ -302,11 +302,11 @@ public class WaypointsCommand extends Command {
                 } else if (action == Action.GOAL) {
                     Goal goal = new GoalBlock(waypoint.getLocation());
                     baritone.getCustomGoalProcess().setGoal(goal);
-                    logDirect(String.format("Goal: %s", goal));
+                    logDirect(String.format("目标：%s", goal));
                 } else if (action == Action.GOTO) {
                     Goal goal = new GoalBlock(waypoint.getLocation());
                     baritone.getCustomGoalProcess().setGoalAndPath(goal);
-                    logDirect(String.format("Going to: %s", goal));
+                    logDirect(String.format("正在前往：%s", goal));
                 }
             }
         }
@@ -347,31 +347,31 @@ public class WaypointsCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "Manage waypoints";
+        return "管理路点";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "The waypoint command allows you to manage Baritone's waypoints.",
+                "waypoint 命令允许你管理 Baritone 的路点。",
                 "",
-                "Waypoints can be used to mark positions for later. Waypoints are each given a tag and an optional name.",
+                "路点可用于标记位置，以便以后使用。每个路点都有一个标签和一个可选的名称。",
                 "",
-                "Note that the info, delete, and goal commands let you specify a waypoint by tag. If there is more than one waypoint with a certain tag, then they will let you select which waypoint you mean.",
+                "请注意，子命令 info、delete、goal 允许你按标签指定路点。如果多个路点具有相同标签，那么将让你选择你指的是哪一个。",
                 "",
-                "Missing arguments for the save command use the USER tag, creating an unnamed waypoint and your current position as defaults.",
+                "缺少参数的 save 子命令默认使用 USER 标签创建一个未命名路点并使用你当前的位置。",
                 "",
-                "Usage:",
-                "> wp [l/list] - List all waypoints.",
-                "> wp <l/list> <tag> - List all waypoints by tag.",
-                "> wp <s/save> - Save an unnamed USER waypoint at your current position",
-                "> wp <s/save> [tag] [name] [pos] - Save a waypoint with the specified tag, name and position.",
-                "> wp <i/info/show> <tag/name> - Show info on a waypoint by tag or name.",
-                "> wp <d/delete> <tag/name> - Delete a waypoint by tag or name.",
-                "> wp <restore> <n> - Restore the last n deleted waypoints.",
-                "> wp <c/clear> <tag> - Delete all waypoints with the specified tag.",
-                "> wp <g/goal> <tag/name> - Set a goal to a waypoint by tag or name.",
-                "> wp <goto> <tag/name> - Set a goal to a waypoint by tag or name and start pathing."
+                "用法：",
+                "> wp [l/list] - 列出所有路点",
+                "> wp <l/list> <标签> - 按标签列出所有路点",
+                "> wp <s/save> - 在你当前位置保存一个未命名的 USER 路点",
+                "> wp <s/save> [标签] [名称] [位置] - 使用指定的标签、名称、位置保存一个路点",
+                "> wp <i/info/show> <标签/名称> - 按标签或名称显示一个路点的信息",
+                "> wp <d/delete> <标签/名称> - 按标签或名称删除一个路点",
+                "> wp <restore> <n> - 恢复最后被删除的 n 个路点",
+                "> wp <c/clear> <标签> - 删除所有带指定标签的路点",
+                "> wp <g/goal> <标签/名称> - 通过标签或名称将目标设置为一个路点",
+                "> wp <goto> <标签/名称> - 通过标签或名称将目标设置为一个路点，并开始寻路"
         );
     }
 

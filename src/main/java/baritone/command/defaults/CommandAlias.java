@@ -59,6 +59,6 @@ public class CommandAlias extends Command {
 
     @Override
     public List<String> getLongDesc() {
-        return Collections.singletonList(String.format("This command is an alias, for: %s ...", target));
+        return Collections.singletonList(String.format("此命令是一个别名，表示：%s ...", target));
     }
 }

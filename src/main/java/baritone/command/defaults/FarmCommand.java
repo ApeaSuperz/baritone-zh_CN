@@ -51,18 +51,18 @@ public class FarmCommand extends Command {
             IWaypoint waypoint = null;
             switch (waypoints.length) {
                 case 0:
-                    throw new CommandInvalidStateException("No waypoints found");
+                    throw new CommandInvalidStateException("未找到路点");
                 case 1:
                     waypoint = waypoints[0];
                     break;
                 default:
-                    throw new CommandInvalidStateException("Multiple waypoints were found");
+                    throw new CommandInvalidStateException("找到多个路点");
             }
             origin = waypoint.getLocation();
         }
 
         baritone.getFarmProcess().farm(range, origin);
-        logDirect("Farming");
+        logDirect("正在务农");
     }
 
     @Override
@@ -72,18 +72,18 @@ public class FarmCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "Farm nearby crops";
+        return "种植附近的作物";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "The farm command starts farming nearby plants. It harvests mature crops and plants new ones.",
+                "farm 命令开始种植附近的作物。它收获成熟的，然后种下新的。",
                 "",
-                "Usage:",
-                "> farm - farms every crop it can find.",
-                "> farm <range> - farm crops within range from the starting position.",
-                "> farm <range> <waypoint> - farm crops within range from waypoint."
+                "用法：",
+                "> farm - 种植能找到的每个作物",
+                "> farm <范围> - 种植在范围内的作物",
+                "> farm <范围> <路点> - 种植在路点范围内的作物"
         );
     }
 }

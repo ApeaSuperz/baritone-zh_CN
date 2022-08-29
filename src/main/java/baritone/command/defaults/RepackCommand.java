@@ -36,7 +36,7 @@ public class RepackCommand extends Command {
     @Override
     public void execute(String label, IArgConsumer args) throws CommandException {
         args.requireMax(0);
-        logDirect(String.format("Queued %d chunks for repacking", WorldScanner.INSTANCE.repack(ctx)));
+        logDirect(String.format("%d 个区块已加入重新打包队列", WorldScanner.INSTANCE.repack(ctx)));
     }
 
     @Override
@@ -46,16 +46,16 @@ public class RepackCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "Re-cache chunks";
+        return "重新缓存区块";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "Repack chunks around you. This basically re-caches them.",
+                "重新打包你周围的区块，也就是重新缓存它们。",
                 "",
-                "Usage:",
-                "> repack - Repack chunks."
+                "用法：",
+                "> repack - 重新打包区块"
         );
     }
 }

@@ -54,7 +54,7 @@ public class SetCommand extends Command {
         String arg = args.hasAny() ? args.getString().toLowerCase(Locale.US) : "list";
         if (Arrays.asList("s", "save").contains(arg)) {
             SettingsUtil.save(Baritone.settings());
-            logDirect("Settings saved");
+            logDirect("设置已保存");
             return;
         }
         boolean viewModified = Arrays.asList("m", "mod", "modified").contains(arg);
@@ -74,8 +74,8 @@ public class SetCommand extends Command {
                     new Paginator<>(toPaginate),
                     () -> logDirect(
                             !search.isEmpty()
-                                    ? String.format("All %ssettings containing the string '%s':", viewModified ? "modified " : "", search)
-                                    : String.format("All %ssettings:", viewModified ? "modified " : "")
+                                    ? String.format("所有%s包含字符串 '%s' 的设置：", viewModified ? "修改过且" : "", search)
+                                    : String.format("所有%s设置：", viewModified ? "修改过的" : "")
                     ),
                     setting -> {
                         ITextComponent typeComponent = new TextComponentString(String.format(
@@ -86,9 +86,9 @@ public class SetCommand extends Command {
                         ITextComponent hoverComponent = new TextComponentString("");
                         hoverComponent.getStyle().setColor(TextFormatting.GRAY);
                         hoverComponent.appendText(setting.getName());
-                        hoverComponent.appendText(String.format("\nType: %s", settingTypeToString(setting)));
-                        hoverComponent.appendText(String.format("\n\nValue:\n%s", settingValueToString(setting)));
-                        hoverComponent.appendText(String.format("\n\nDefault Value:\n%s", settingDefaultToString(setting)));
+                        hoverComponent.appendText(String.format("\n类型：%s", settingTypeToString(setting)));
+                        hoverComponent.appendText(String.format("\n\n值：\n%s", settingValueToString(setting)));
+                        hoverComponent.appendText(String.format("\n\n默认值：\n%s", settingDefaultToString(setting)));
                         String commandSuggestion = Baritone.settings().prefix.value + String.format("set %s ", setting.getName());
                         ITextComponent component = new TextComponentString(setting.getName());
                         component.getStyle().setColor(TextFormatting.GRAY);
@@ -108,12 +108,12 @@ public class SetCommand extends Command {
         boolean doingSomething = resetting || toggling;
         if (resetting) {
             if (!args.hasAny()) {
-                logDirect("Please specify 'all' as an argument to reset to confirm you'd really like to do this");
-                logDirect("ALL settings will be reset. Use the 'set modified' or 'modified' commands to see what will be reset.");
-                logDirect("Specify a setting name instead of 'all' to only reset one setting");
+                logDirect("请将 'all' 指定为 reset 的参数，以确认你确实想要这样做：");
+                logDirect("*所有*设置都将被重置，使用 'set modified' 或 'modified' 命令查看会被重置的内容。");
+                logDirect("指定一个设置项名称而非 'all'，可以仅重置一个设置项。");
             } else if (args.peekString().equalsIgnoreCase("all")) {
                 SettingsUtil.modifiedSettings(Baritone.settings()).forEach(Settings.Setting::reset);
-                logDirect("All settings have been reset to their default values");
+                logDirect("所有设置都已重置为其默认值");
                 SettingsUtil.save(Baritone.settings());
                 return;
             }
@@ -127,16 +127,16 @@ public class SetCommand extends Command {
                 .findFirst()
                 .orElse(null);
         if (setting == null) {
-            throw new CommandInvalidTypeException(args.consumed(), "a valid setting");
+            throw new CommandInvalidTypeException(args.consumed(), "一个有效的设置项");
         }
         if (javaOnlySetting(setting)) {
             // ideally it would act as if the setting didn't exist
             // but users will see it in Settings.java or its javadoc
             // so at some point we have to tell them or they will see it as a bug
-            throw new CommandInvalidStateException(String.format("Setting %s can only be used via the api.", setting.getName()));
+            throw new CommandInvalidStateException(String.format("设置项 %s 只能通过 API 使用。", setting.getName()));
         }
         if (!doingSomething && !args.hasAny()) {
-            logDirect(String.format("Value of setting %s:", setting.getName()));
+            logDirect(String.format("设置项 %s 的值：", setting.getName()));
             logDirect(settingValueToString(setting));
         } else {
             String oldValue = settingValueToString(setting);
@@ -144,12 +144,12 @@ public class SetCommand extends Command {
                 setting.reset();
             } else if (toggling) {
                 if (setting.getValueClass() != Boolean.class) {
-                    throw new CommandInvalidTypeException(args.consumed(), "a toggleable setting", "some other setting");
+                    throw new CommandInvalidTypeException(args.consumed(), "一个可切换的设置", "其它设置");
                 }
                 //noinspection unchecked
                 ((Settings.Setting<Boolean>) setting).value ^= true;
                 logDirect(String.format(
-                        "Toggled setting %s to %s",
+                        "已将设置 %s 切换为 %s",
                         setting.getName(),
                         Boolean.toString((Boolean) setting.value)
                 ));
@@ -159,23 +159,23 @@ public class SetCommand extends Command {
                     SettingsUtil.parseAndApply(Baritone.settings(), arg, newValue);
                 } catch (Throwable t) {
                     t.printStackTrace();
-                    throw new CommandInvalidTypeException(args.consumed(), "a valid value", t);
+                    throw new CommandInvalidTypeException(args.consumed(), "一个有效的设置项", t);
                 }
             }
             if (!toggling) {
                 logDirect(String.format(
-                        "Successfully %s %s to %s",
-                        resetting ? "reset" : "set",
+                        "成功将 %s %s为 %s",
                         setting.getName(),
+                        resetting ? "重置" : "设置",
                         settingValueToString(setting)
                 ));
             }
-            ITextComponent oldValueComponent = new TextComponentString(String.format("Old value: %s", oldValue));
+            ITextComponent oldValueComponent = new TextComponentString(String.format("旧值：%s", oldValue));
             oldValueComponent.getStyle()
                     .setColor(TextFormatting.GRAY)
                     .setHoverEvent(new HoverEvent(
                             HoverEvent.Action.SHOW_TEXT,
-                            new TextComponentString("Click to set the setting back to this value")
+                            new TextComponentString("点击将设置恢复为此值")
                     ))
                     .setClickEvent(new ClickEvent(
                             ClickEvent.Action.RUN_COMMAND,
@@ -184,9 +184,9 @@ public class SetCommand extends Command {
             logDirect(oldValueComponent);
             if ((setting.getName().equals("chatControl") && !(Boolean) setting.value && !Baritone.settings().chatControlAnyway.value) ||
                     setting.getName().equals("chatControlAnyway") && !(Boolean) setting.value && !Baritone.settings().chatControl.value) {
-                logDirect("Warning: Chat commands will no longer work. If you want to revert this change, use prefix control (if enabled) or click the old value listed above.", TextFormatting.RED);
+                logDirect("警告：聊天命令将不再有效。如果你想恢复此更改，请使用前缀控制（如果启用）或点击上方列出的旧值。", TextFormatting.RED);
             } else if (setting.getName().equals("prefixControl") && !(Boolean) setting.value) {
-                logDirect("Warning: Prefixed commands will no longer work. If you want to revert this change, use chat control (if enabled) or click the old value listed above.", TextFormatting.RED);
+                logDirect("警告：带前缀的命令将不再有效。如果你想恢复此更改，请使用聊天控制（如果启用）或点击上方列出的旧值。", TextFormatting.RED);
             }
         }
         SettingsUtil.save(Baritone.settings());
@@ -237,24 +237,24 @@ public class SetCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "View or change settings";
+        return "查看或更改设置";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "Using the set command, you can manage all of Baritone's settings. Almost every aspect is controlled by these settings - go wild!",
+                "使用 set 命令，你可以管理 Baritone 的所有设置。几乎每个方面都由这些设置来控制，尽情发挥吧！",
                 "",
-                "Usage:",
-                "> set - Same as `set list`",
-                "> set list [page] - View all settings",
-                "> set modified [page] - View modified settings",
-                "> set <setting> - View the current value of a setting",
-                "> set <setting> <value> - Set the value of a setting",
-                "> set reset all - Reset ALL SETTINGS to their defaults",
-                "> set reset <setting> - Reset a setting to its default",
-                "> set toggle <setting> - Toggle a boolean setting",
-                "> set save - Save all settings (this is automatic tho)"
+                "用法：",
+                "> set - 与 `set list` 相同",
+                "> set list [页码] - 查看所有设置",
+                "> set modified [页码] - 查看修改过的设置",
+                "> set <设置项> - 查看一项设置当前的值",
+                "> set <设置项> <值> - 设置一项设置的值",
+                "> set reset all - 重置*所有设置*为它们的默认值",
+                "> set reset <设置项> - 重置一项设置为它的默认值",
+                "> set toggle <设置项> - 切换布尔设置",
+                "> set save - 保存所有设置（然而这是自动的）"
         );
     }
 }

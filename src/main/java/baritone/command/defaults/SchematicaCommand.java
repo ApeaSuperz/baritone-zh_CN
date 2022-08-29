@@ -45,15 +45,15 @@ public class SchematicaCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "Builds the loaded schematic";
+        return "建造已加载的蓝图";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "Builds the schematic currently open in Schematica.",
+                "建造当前在 Schematica（一个模组，常译为投影）中打开的蓝图。",
                 "",
-                "Usage:",
+                "用法：",
                 "> schematica"
         );
     }

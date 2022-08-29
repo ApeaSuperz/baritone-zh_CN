@@ -43,7 +43,7 @@ public class ETACommand extends Command {
         IPathingControlManager pathingControlManager = baritone.getPathingControlManager();
         IBaritoneProcess process = pathingControlManager.mostRecentInControl().orElse(null);
         if (process == null) {
-            throw new CommandInvalidStateException("No process in control");
+            throw new CommandInvalidStateException("没有在控制中的进程");
         }
         IPathingBehavior pathingBehavior = baritone.getPathingBehavior();
 
@@ -51,8 +51,8 @@ public class ETACommand extends Command {
         double ticksRemainingInGoal = pathingBehavior.estimatedTicksToGoal().orElse(Double.NaN);
 
         logDirect(String.format(
-                "Next segment: %.1fs (%.0f ticks)\n" +
-                        "Goal: %.1fs (%.0f ticks)",
+                "下个片段：%.1fs (%.0f ticks)\n" +
+                        "目标：%.1fs (%.0f ticks)",
                 ticksRemainingInSegment / 20, // we just assume tps is 20, it isn't worth the effort that is needed to calculate it exactly
                 ticksRemainingInSegment,
                 ticksRemainingInGoal / 20,
@@ -67,19 +67,19 @@ public class ETACommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "View the current ETA";
+        return "查看当前 ETA（预计到达时间）";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "The ETA command provides information about the estimated time until the next segment.",
-                "and the goal",
+                "ETA 命令提供了到下一个片段的估计时间信息。",
+                "目标的也是",
                 "",
-                "Be aware that the ETA to your goal is really unprecise",
+                "请注意，到达目标的预计时间是真的不准",
                 "",
-                "Usage:",
-                "> eta - View ETA, if present"
+                "用法：",
+                "> eta - 查看预计到达时间（如有）"
         );
     }
 }

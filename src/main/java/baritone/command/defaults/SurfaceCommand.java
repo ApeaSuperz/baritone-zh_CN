@@ -45,7 +45,7 @@ public class SurfaceCommand extends Command {
         // Ensure this command will not run if you are above the surface level and the block above you is air
         // As this would imply that your are already on the open surface
         if (playerPos.getY() > surfaceLevel && mc.world.getBlockState(playerPos.up()).getBlock() instanceof BlockAir) {
-            logDirect("Already at surface");
+            logDirect("已经在地面上了");
             return;
         }
 
@@ -56,12 +56,12 @@ public class SurfaceCommand extends Command {
 
             if (!(mc.world.getBlockState(newPos).getBlock() instanceof BlockAir) && newPos.getY() > playerPos.getY()) {
                 Goal goal = new GoalBlock(newPos.up());
-                logDirect(String.format("Going to: %s", goal.toString()));
+                logDirect(String.format("正在前往：%s", goal.toString()));
                 baritone.getCustomGoalProcess().setGoalAndPath(goal);
                 return;
             }
         }
-        logDirect("No higher location found");
+        logDirect("没有发现更高的位置");
     }
 
     @Override
@@ -71,19 +71,19 @@ public class SurfaceCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "Used to get out of caves, mines, ...";
+        return "用于走出洞穴、矿井等……";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "The surface/top command tells Baritone to head towards the closest surface-like area.",
+                "surface/top 命令告诉 Baritone 朝最近的类似地面的区域前进。",
                 "",
-                "This can be the surface or the highest available air space, depending on circumstances.",
+                "这可以是地面或最高可到达的空气层数，视情况而定。",
                 "",
-                "Usage:",
-                "> surface - Used to get out of caves, mines, ...",
-                "> top - Used to get out of caves, mines, ..."
+                "用法：",
+                "> surface - 用于走出洞穴、矿井等",
+                "> top - 用于走出洞穴、矿井等"
         );
     }
 }

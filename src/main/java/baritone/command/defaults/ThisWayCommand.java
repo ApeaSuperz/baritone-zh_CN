@@ -42,7 +42,7 @@ public class ThisWayCommand extends Command {
                 args.getAs(Double.class)
         );
         baritone.getCustomGoalProcess().setGoal(goal);
-        logDirect(String.format("Goal: %s", goal));
+        logDirect(String.format("目标：%s", goal));
     }
 
     @Override
@@ -52,16 +52,16 @@ public class ThisWayCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "Travel in your current direction";
+        return "沿着你目前的方向前进";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "Creates a GoalXZ some amount of blocks in the direction you're currently looking",
+                "在你目前所看向的方向上创建一个若干方块的【XZ 目标】。",
                 "",
-                "Usage:",
-                "> thisway <distance> - makes a GoalXZ distance blocks in front of you"
+                "用法：",
+                "> thisway <距离> - 在你前方制作一个【距离】格方块的【XZ 目标】"
         );
     }
 }

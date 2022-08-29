@@ -59,9 +59,9 @@ public class BuildCommand extends Command {
         }
         boolean success = baritone.getBuilderProcess().build(file.getName(), file, buildOrigin);
         if (!success) {
-            throw new CommandInvalidStateException("Couldn't load the schematic. Make sure to use the FULL file name, including the extension (e.g. blah.schematic).");
+            throw new CommandInvalidStateException("不能加载示意图。确保使用的是完整文件名，包含拓展名（例如 blah.schematic）。");
         }
-        logDirect(String.format("Successfully loaded schematic for building\nOrigin: %s", buildOrigin));
+        logDirect(String.format("成功加载建造示意图\n原点：%s", buildOrigin));
     }
 
     @Override
@@ -77,17 +77,17 @@ public class BuildCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "Build a schematic";
+        return "建造一个示意图";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "Build a schematic from a file.",
+                "根据文件建造一个示意图。",
                 "",
-                "Usage:",
-                "> build <filename> - Loads and builds '<filename>.schematic'",
-                "> build <filename> <x> <y> <z> - Custom position"
+                "用法：",
+                "> build <文件名> - 加载并建造 '<文件名>.schematic'",
+                "> build <文件名> <x> <y> <z> - 自定义位置"
         );
     }
 }

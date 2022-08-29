@@ -83,7 +83,7 @@ public class Paginator<E> implements Helper {
                     ))
                     .setHoverEvent(new HoverEvent(
                             HoverEvent.Action.SHOW_TEXT,
-                            new TextComponentString("Click to view previous page")
+                            new TextComponentString("点击查看上一页")
                     ));
         } else {
             prevPageComponent.getStyle().setColor(TextFormatting.DARK_GRAY);
@@ -97,7 +97,7 @@ public class Paginator<E> implements Helper {
                     ))
                     .setHoverEvent(new HoverEvent(
                             HoverEvent.Action.SHOW_TEXT,
-                            new TextComponentString("Click to view next page")
+                            new TextComponentString("点击查看下一页")
                     ));
         } else {
             nextPageComponent.getStyle().setColor(TextFormatting.DARK_GRAY);
@@ -124,7 +124,7 @@ public class Paginator<E> implements Helper {
                 throw new CommandInvalidTypeException(
                         consumer.consumed(),
                         String.format(
-                                "a valid page (1-%d)",
+                                "一个有效页码（1-%d）",
                                 pagi.getMaxPage()
                         ),
                         consumer.consumed().getValue()

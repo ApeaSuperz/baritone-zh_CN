@@ -41,10 +41,10 @@ public class ComeCommand extends Command {
         args.requireMax(0);
         Entity entity = mc.getRenderViewEntity();
         if (entity == null) {
-            throw new CommandInvalidStateException("render view entity is null");
+            throw new CommandInvalidStateException("提供视野的实体为 null");
         }
         baritone.getCustomGoalProcess().setGoalAndPath(new GoalBlock(new BlockPos(entity)));
-        logDirect("Coming");
+        logDirect("来啦");
     }
 
     @Override
@@ -54,17 +54,17 @@ public class ComeCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "Start heading towards your camera";
+        return "开始朝你的相机前进";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "The come command tells Baritone to head towards your camera.",
+                "come 命令告诉 Baritone 来到你的相机（视野）位置。",
                 "",
-                "This can be useful in hacked clients where freecam doesn't move your player position.",
+                "在一些黑客客户端中非常有用，因为自由相机（Freecam，常被称作灵魂出窍）不会移动你角色的位置。",
                 "",
-                "Usage:",
+                "用法：",
                 "> come"
         );
     }
