@@ -1,20 +1,17 @@
 ---
-name: Suggestion
-about: Please file a separate report for each suggestion
-title: Please add a brief but descriptive title
-labels: enhancement
+name: 给予建议
+about: 觉得 Baritone-zh_CN 还不够好？说说你的想法吧！
+title: 请添加一个简单明了的标题
+labels: 增强
 assignees: ''
 ---
 
-## Describe your suggestion
-With as much detail as possible, describe what your suggestion would do for Baritone.
+## 描述你的建议
+请尽可能详细地描述你的建议。
 
-## Settings
-If applicable, what settings/customizability should be offered to tweak the functionality of your suggestion.
+## 背景
+说说你的建议将会给 Baritone-zh_CN 带来什么样的提升，或者该建议背后的原因。
 
-## Context
-Describe how your suggestion would improve Baritone, or the reason behind it being added.
-
-## Final checklist
-- [x] I know how to properly use check boxes 
-- [ ] I have not used any OwO's or UwU's in this issue.
+## 最终检查
+- [x] 我知道如何使用复选框。
+- [ ] 在此问题报告（issue）中，我没有使用任何二次元元素。
